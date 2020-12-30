@@ -127,4 +127,4 @@ class AvailableMarkets(Base):
     UY = Column(Boolean)
     VN = Column(Boolean)
     XK = Column(Boolean)
-    ZA
+    ZA = Column(Boolean)

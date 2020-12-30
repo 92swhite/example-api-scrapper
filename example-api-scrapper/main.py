@@ -5,8 +5,9 @@ from helpers.db_handler import DbHandler
 
 
 def main():
-    api_handler = ApiHandler(testing=True)
-    new_releases = api_handler.get_new_releases()
+    # api_handler = ApiHandler(testing=True)
+    # new_releases = api_handler.get_new_releases()
+    db_handler = DbHandler()
 
 
 if __name__ == "__main__":
