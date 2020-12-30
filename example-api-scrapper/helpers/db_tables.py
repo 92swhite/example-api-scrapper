@@ -1,0 +1,130 @@
+from sqlalchemy import Column
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date
+
+Base = declarative_base()
+
+
+class NewReleases(Base):
+    __tablename__ = "NewReleases"
+
+    id = Column(String, primary_key=True)
+    album_type = Column(String)
+    name = Column(String)
+    release_date = Column(Date)
+    release_date_precision = Column(String)
+    total_tracks = Column(SmallInteger)
+    type = Column(String)
+
+
+class NewReleasesArtistsBridge(Base):
+    __tablename__ = "NewReleasesArtistsBridge"
+
+    album_id = Column(String)
+    artist_id = Column(String)
+
+
+class Artists(Base):
+    __tablename__ = "Artists"
+
+    id = Column(String, primary_key=True)
+    name = Column(String)
+    type = Column(String)
+
+
+class AvailableMarkets(Base):
+    __tablename__ = "AvailableMarkets"
+
+    id = Column(String, primary_key=True)
+    AD = Column(Boolean)
+    AE = Column(Boolean)
+    AL = Column(Boolean)
+    AR = Column(Boolean)
+    AT = Column(Boolean)
+    AU = Column(Boolean)
+    BA = Column(Boolean)
+    BE = Column(Boolean)
+    BG = Column(Boolean)
+    BH = Column(Boolean)
+    BO = Column(Boolean)
+    BR = Column(Boolean)
+    BY = Column(Boolean)
+    CA = Column(Boolean)
+    CH = Column(Boolean)
+    CL = Column(Boolean)
+    CO = Column(Boolean)
+    CR = Column(Boolean)
+    CY = Column(Boolean)
+    CZ = Column(Boolean)
+    DE = Column(Boolean)
+    DK = Column(Boolean)
+    DO = Column(Boolean)
+    DZ = Column(Boolean)
+    EC = Column(Boolean)
+    EE = Column(Boolean)
+    EG = Column(Boolean)
+    ES = Column(Boolean)
+    FI = Column(Boolean)
+    FR = Column(Boolean)
+    GB = Column(Boolean)
+    GR = Column(Boolean)
+    GT = Column(Boolean)
+    HK = Column(Boolean)
+    HN = Column(Boolean)
+    HR = Column(Boolean)
+    HU = Column(Boolean)
+    ID = Column(Boolean)
+    IE = Column(Boolean)
+    IL = Column(Boolean)
+    IN = Column(Boolean)
+    IS = Column(Boolean)
+    IT = Column(Boolean)
+    JO = Column(Boolean)
+    JP = Column(Boolean)
+    KW = Column(Boolean)
+    KZ = Column(Boolean)
+    LB = Column(Boolean)
+    LI = Column(Boolean)
+    LT = Column(Boolean)
+    LU = Column(Boolean)
+    LV = Column(Boolean)
+    MA = Column(Boolean)
+    MC = Column(Boolean)
+    MD = Column(Boolean)
+    ME = Column(Boolean)
+    MK = Column(Boolean)
+    MT = Column(Boolean)
+    MX = Column(Boolean)
+    MY = Column(Boolean)
+    NI = Column(Boolean)
+    NL = Column(Boolean)
+    NO = Column(Boolean)
+    NZ = Column(Boolean)
+    OM = Column(Boolean)
+    PA = Column(Boolean)
+    PE = Column(Boolean)
+    PH = Column(Boolean)
+    PL = Column(Boolean)
+    PS = Column(Boolean)
+    PT = Column(Boolean)
+    PY = Column(Boolean)
+    QA = Column(Boolean)
+    RO = Column(Boolean)
+    RS = Column(Boolean)
+    RU = Column(Boolean)
+    SA = Column(Boolean)
+    SE = Column(Boolean)
+    SG = Column(Boolean)
+    SI = Column(Boolean)
+    SK = Column(Boolean)
+    SV = Column(Boolean)
+    TH = Column(Boolean)
+    TN = Column(Boolean)
+    TR = Column(Boolean)
+    TW = Column(Boolean)
+    UA = Column(Boolean)
+    US = Column(Boolean)
+    UY = Column(Boolean)
+    VN = Column(Boolean)
+    XK = Column(Boolean)
+    ZA

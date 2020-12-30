@@ -1,12 +1,12 @@
 import os
 import logging
 from helpers.api_handler import ApiHandler
+from helpers.db_handler import DbHandler
 
 
 def main():
     api_handler = ApiHandler(testing=True)
-    stuff = api_handler.get_new_releases()
-    print(stuff)
+    new_releases = api_handler.get_new_releases()
 
 
 if __name__ == "__main__":

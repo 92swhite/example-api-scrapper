@@ -14,7 +14,7 @@ class ApiHandler:
         if testing:
             return self.__get_testing_token()
         else:
-            self.__get_token_from_request()
+            return self.__get_token_from_request()
 
     def __get_testing_token(self) -> str:
         try:
@@ -22,13 +22,13 @@ class ApiHandler:
             return os.environ["API_TESTING_TOKEN"]
         except KeyError:
             logging.error('MISSING "API_TESTING_TOKEN" ENV VAR')
-            self.__get_token_from_request()
+            return self.__get_token_from_request()
 
     def __get_token_from_request(self) -> str:
         url = f"https://accounts.spotify.com/api/token"
         payload = self.__make_token_payload()
         response = self.session.post(url, data=payload)
-        logging.info(f"TOKEN RESPONSE CODE: {response.status_code}")
+        logging.debug(f"TOKEN RESPONSE CODE: {response.status_code}")
         return response.json()["access_token"]
 
     def __make_token_payload(self) -> dict:
@@ -46,15 +46,14 @@ class ApiHandler:
 
     def __get_endpoint_results(self, endpoint: str) -> dict:
         response = self.session.get(self.base_url + endpoint, headers=self.headers)
-        logging.info(f"\tENDPOINT {endpoint} : {response.status_code}")
         return response.json()
 
     def get_new_releases(
         self, country: str = "US", limit: int = 20, offset: int = 0
     ) -> dict:
         endpoint = (
-            f"/browse/new-releases?country={country}&offset={offset}&limit={limit}"
+            f"browse/new-releases?country={country}&offset={offset}&limit={limit}"
         )
-        logging.info(f"NEW RELEASES ENDPOINT: {endpoint}")
-        logging.info(f"PULLING NEW RELEASES...")
+        logging.debug(f"NEW RELEASES ENDPOINT: {endpoint}")
+        logging.info(f"PULLING NEW RELEASES...\n\tOFFSET: {offset}\tLIMIT: {limit}")
         return self.__get_endpoint_results(endpoint)
