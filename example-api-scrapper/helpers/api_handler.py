@@ -50,10 +50,11 @@ class ApiHandler:
 
     def get_new_releases(
         self, country: str = "US", limit: int = 20, offset: int = 0
-    ) -> dict:
+    ) -> list:
         endpoint = (
             f"browse/new-releases?country={country}&offset={offset}&limit={limit}"
         )
         logging.debug(f"NEW RELEASES ENDPOINT: {endpoint}")
         logging.info(f"PULLING NEW RELEASES...\n\tOFFSET: {offset}\tLIMIT: {limit}")
-        return self.__get_endpoint_results(endpoint)
+        result = self.__get_endpoint_results(endpoint)
+        return result["albums"]["items"]

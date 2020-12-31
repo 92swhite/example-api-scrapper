@@ -20,8 +20,8 @@ class NewReleases(Base):
 class NewReleasesArtistsBridge(Base):
     __tablename__ = "NewReleasesArtistsBridge"
 
-    album_id = Column(String)
-    artist_id = Column(String)
+    album_id = Column(String, primary_key=True)
+    artist_id = Column(String, primary_key=True)
 
 
 class Artists(Base):
