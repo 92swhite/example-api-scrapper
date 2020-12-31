@@ -52,9 +52,10 @@ class DbHandler:
                 artist["album_id"] = album_id
                 artist["artist_id"] = artist["id"]
                 self.__upsert_row(artist, NewReleasesArtistsBridge)
-            for market in album["available_markets"]:
-                print(market)
-                exit()
-                market["album_id"] = album_id
-                self.__upsert_row(market, AvailableMarkets)
+            markets = {
+                k: (True if k in album["available_markets"] else False)
+                for k in AvailableMarkets.__table__.columns.keys()
+            }
+            markets["album_id"] = album_id
+            self.__upsert_row(markets, AvailableMarkets)
         self.session.commit()
