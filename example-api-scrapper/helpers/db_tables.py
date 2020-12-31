@@ -14,7 +14,6 @@ class NewReleases(Base):
     release_date = Column(Date)
     release_date_precision = Column(String)
     total_tracks = Column(SmallInteger)
-    type = Column(String)
 
 
 class NewReleasesArtistsBridge(Base):

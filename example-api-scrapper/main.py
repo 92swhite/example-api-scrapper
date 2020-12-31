@@ -4,14 +4,15 @@ from helpers.api_handler import ApiHandler
 from helpers.db_handler import DbHandler
 
 
-def main():
-    api_handler = ApiHandler(testing=True)
-    new_releases = api_handler.get_new_releases()
+def main(testing: bool):
+    api_handler = ApiHandler(testing)
     db_handler = DbHandler()
-    db_handler.handle_new_releases(new_releases)
+    for new_releases in api_handler.get_new_releases():
+        db_handler.handle_new_releases(new_releases)
 
 
 if __name__ == "__main__":
     logging_level = os.getenv("LOGGING_LEVEL", "INFO").upper()
+    testing = os.getenv("TESTING", False)
     logging.basicConfig(level=logging_level)
-    main()
+    main(testing)

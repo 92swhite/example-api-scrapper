@@ -21,7 +21,7 @@ class ApiHandler:
             logging.info('USING "API_TESTING_TOKEN"')
             return os.environ["API_TESTING_TOKEN"]
         except KeyError:
-            logging.error('MISSING "API_TESTING_TOKEN" ENV VAR')
+            logging.warning('MISSING "API_TESTING_TOKEN" ENV VAR')
             return self.__get_token_from_request()
 
     def __get_token_from_request(self) -> str:
@@ -44,17 +44,30 @@ class ApiHandler:
             "Content-Type": "application/json",
         }
 
-    def __get_endpoint_results(self, endpoint: str) -> dict:
-        response = self.session.get(self.base_url + endpoint, headers=self.headers)
+    def __get_endpoint_results(self, url: str) -> dict:
+        response = self.session.get(url, headers=self.headers)
         return response.json()
+
+    def __parse_offset_and_limit(self, url: str) -> tuple:
+        if url is None:
+            return ("COMPLETED", "COMPLETED")
+        else:
+            parsed = url.split("&")[-2:]
+            map_parsed = map(lambda x: int(x.split("=")[-1]), parsed)
+            return tuple(map_parsed)
 
     def get_new_releases(
         self, country: str = "US", limit: int = 20, offset: int = 0
     ) -> list:
-        endpoint = (
+        url = (
+            f"{self.base_url}"
             f"browse/new-releases?country={country}&offset={offset}&limit={limit}"
         )
-        logging.debug(f"NEW RELEASES ENDPOINT: {endpoint}")
-        logging.info(f"PULLING NEW RELEASES...\n\tOFFSET: {offset}\tLIMIT: {limit}")
-        result = self.__get_endpoint_results(endpoint)
-        return result["albums"]["items"]
+        logging.info("PULLING NEW RELEASES...")
+        while url is not None:
+            logging.debug(f"NEW RELEASES URL: {url}")
+            logging.info(f"\t{offset} - {offset + limit}")
+            result = self.__get_endpoint_results(url)
+            url = result["albums"]["next"]
+            offset, limit = self.__parse_offset_and_limit(url)
+            yield result["albums"]["items"]
