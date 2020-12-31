@@ -3,13 +3,14 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.engine.base import Engine as SQLAlchemyEngine
 from sqlalchemy.orm.session import Session as SQLAlchemySession
-from .db_tables import NewReleases
+from .db_tables import Base, NewReleases
 
 
 class DbHandler:
     def __init__(self) -> None:
         self.engine = self.__get_engine()
         self.session = self.__get_session()
+        Base.metadata.create_all(self.engine)
 
     def __get_engine(self) -> SQLAlchemyEngine:
         conn_string = (
