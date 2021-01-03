@@ -1,6 +1,7 @@
 from sqlalchemy import Column
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date
+from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date, DateTime
+from datetime import datetime
 
 Base = declarative_base()
 
@@ -14,6 +15,7 @@ class NewReleases(Base):
     release_date = Column(Date)
     release_date_precision = Column(String)
     total_tracks = Column(SmallInteger)
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class NewReleasesArtistsBridge(Base):
@@ -21,6 +23,7 @@ class NewReleasesArtistsBridge(Base):
 
     album_id = Column(String, primary_key=True)
     artist_id = Column(String, primary_key=True)
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class Artists(Base):
@@ -29,6 +32,7 @@ class Artists(Base):
     id = Column(String, primary_key=True)
     name = Column(String)
     type = Column(String)
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 
 class AvailableMarkets(Base):
@@ -711,3 +715,4 @@ class AvailableMarkets(Base):
     ZX = Column(Boolean)
     ZY = Column(Boolean)
     ZZ = Column(Boolean)
+    last_updated = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)

@@ -35,8 +35,13 @@ class DbHandler:
         Session = sessionmaker(bind=self.engine)
         return Session()
 
-    def __get_record_instance(self, data: dict, table: DeclarativeMeta) -> dict:
-        row = {key: data[key] for key in table.__table__.columns.keys()}
+    def __get_table_keys(self, table: DeclarativeMeta) -> list:
+        keys = table.__table__.columns.keys()
+        keys.remove("last_updated")
+        return keys
+
+    def __get_record_instance(self, data: dict, table: DeclarativeMeta):
+        row = {key: data[key] for key in self.__get_table_keys(table)}
         return table(**row)
 
     def __upsert_row(self, data: dict, table: DeclarativeMeta) -> None:
@@ -54,8 +59,9 @@ class DbHandler:
                 self.__upsert_row(artist, NewReleasesArtistsBridge)
             markets = {
                 k: (True if k in album["available_markets"] else False)
-                for k in AvailableMarkets.__table__.columns.keys()
+                for k in self.__get_table_keys(AvailableMarkets)
             }
             markets["album_id"] = album_id
             self.__upsert_row(markets, AvailableMarkets)
         self.session.commit()
+        exit()
