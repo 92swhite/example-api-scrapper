@@ -1,11 +1,12 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.engine.base import Engine as SQLAlchemyEngine
-from sqlalchemy.orm.session import Session as SQLAlchemySession
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
-from .db_tables import (
+from typing import Dict, List, Any
+from sqlalchemy import create_engine  # type: ignore
+from sqlalchemy.orm import sessionmaker  # type: ignore
+from sqlalchemy.exc import IntegrityError  # type: ignore
+from sqlalchemy.engine.base import Engine as SQLAlchemyEngine  # type: ignore
+from sqlalchemy.orm.session import Session as SQLAlchemySession  # type: ignore
+from sqlalchemy.ext.declarative.api import DeclarativeMeta  # type: ignore
+from .db_tables import (  # type: ignore
     Base,
     NewReleases,
     Artists,
@@ -35,12 +36,12 @@ class DbHandler:
         Session = sessionmaker(bind=self.engine)
         return Session()
 
-    def __get_table_keys(self, table: DeclarativeMeta) -> list:
+    def __get_table_keys(self, table: DeclarativeMeta) -> List[str]:
         keys = table.__table__.columns.keys()
         keys.remove("last_updated")
         return keys
 
-    def __get_record_instance(self, data: dict, table: DeclarativeMeta):
+    def __get_record_instance(self, data: Dict[str, Any], table: DeclarativeMeta):
         row = {key: data[key] for key in self.__get_table_keys(table)}
         return table(**row)
 
@@ -48,7 +49,7 @@ class DbHandler:
         row = self.__get_record_instance(data, table)
         self.session.merge(row)
 
-    def handle_new_releases(self, new_releases: dict) -> None:
+    def handle_new_releases(self, new_releases: List[Dict[str, Any]]) -> None:
         for album in new_releases:
             album_id = album["id"]
             self.__upsert_row(album, NewReleases)

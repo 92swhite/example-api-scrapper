@@ -2,8 +2,8 @@ import os
 import logging
 import argparse
 from typing import Dict
-from helpers.api_handler import ApiHandler
-from helpers.db_handler import DbHandler
+from helpers.api_handler import ApiHandler  # type: ignore
+from helpers.db_handler import DbHandler  # type: ignore
 
 
 def main(testing: bool):

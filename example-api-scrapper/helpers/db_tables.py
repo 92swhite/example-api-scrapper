@@ -1,6 +1,6 @@
-from sqlalchemy import Column
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date, DateTime
+from sqlalchemy import Column  # type: ignore
+from sqlalchemy.ext.declarative import declarative_base  # type: ignore
+from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date, DateTime  # type: ignore
 from datetime import datetime
 
 Base = declarative_base()

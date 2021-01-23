@@ -1,6 +1,7 @@
 import os
 import logging
 import requests
+from typing import Dict, Iterator, Tuple, Any
 
 
 class ApiHandler:
@@ -31,26 +32,26 @@ class ApiHandler:
         logging.debug(f"TOKEN RESPONSE CODE: {response.status_code}")
         return response.json()["access_token"]
 
-    def __make_token_payload(self) -> dict:
+    def __make_token_payload(self) -> Dict[str, str]:
         return {
             "grant_type": "client_credentials",
             "client_id": os.environ["API_CLIENT_ID"],
             "client_secret": os.environ["API_CLIENT_SECRET"],
         }
 
-    def __make_headers(self) -> dict:
+    def __make_headers(self) -> Dict[str, str]:
         return {
             "Authorization": f"Bearer {self.token}",
             "Content-Type": "application/json",
         }
 
-    def __get_endpoint_results(self, url: str) -> dict:
+    def __get_endpoint_results(self, url: str) -> Dict[str, Any]:
         response = self.session.get(url, headers=self.headers)
         return response.json()
 
-    def __parse_offset_and_limit(self, url: str) -> tuple:
+    def __parse_offset_and_limit(self, url: str) -> Tuple[int, ...]:
         if url is None:
-            return ("COMPLETED", "COMPLETED")
+            return (0, 0)
         else:
             parsed = url.split("&")[-2:]
             map_parsed = map(lambda x: int(x.split("=")[-1]), parsed)
@@ -58,7 +59,7 @@ class ApiHandler:
 
     def get_new_releases(
         self, country: str = "US", limit: int = 20, offset: int = 0
-    ) -> list:
+    ) -> Iterator[Dict[str, Any]]:
         url = (
             f"{self.base_url}"
             f"browse/new-releases?country={country}&offset={offset}&limit={limit}"
