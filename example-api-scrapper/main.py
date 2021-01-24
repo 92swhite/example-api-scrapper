@@ -25,7 +25,7 @@ def __get_args() -> Dict[str, bool]:
 def __logging_stats(counter: CounterType) -> None:
     display_len = 40
     symbols = ("\n\t" + ("=" * display_len)) * 2
-    wrapped_title = __get_wrapped_text(display_len, f"Upsertes", " ")
+    wrapped_title = __get_wrapped_text(display_len, f"Upserts", " ")
     wrapped_artists = __get_wrapped_text(display_len, f"Artists: {counter['artists']}")
     wrapped_albums = __get_wrapped_text(display_len, f"Albums: {counter['albums']}")
     display_message = f"""
