@@ -1,5 +1,5 @@
 import os
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Counter
 from sqlalchemy import create_engine  # type: ignore
 from sqlalchemy.orm import sessionmaker  # type: ignore
 from sqlalchemy.exc import IntegrityError  # type: ignore
@@ -49,14 +49,18 @@ class DbHandler:
         row = self.__get_record_instance(data, table)
         self.session.merge(row)
 
-    def handle_new_releases(self, new_releases: List[Dict[str, Any]]) -> None:
+    def handle_new_releases(
+        self, new_releases: List[Dict[str, Any]], counter: Counter
+    ) -> None:
         for album in new_releases:
             album_id = album["id"]
+            counter.update(albums=1)
             self.__upsert_row(album, NewReleases)
             for artist in album["artists"]:
                 self.__upsert_row(artist, Artists)
                 artist["album_id"] = album_id
                 artist["artist_id"] = artist["id"]
+                counter.update(artists=1)
                 self.__upsert_row(artist, NewReleasesArtistsBridge)
             markets = {
                 k: (True if k in album["available_markets"] else False)
@@ -65,4 +69,3 @@ class DbHandler:
             markets["album_id"] = album_id
             self.__upsert_row(markets, AvailableMarkets)
         self.session.commit()
-        exit()
