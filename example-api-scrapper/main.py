@@ -1,13 +1,15 @@
 import os
+import json
 import logging
 import argparse
+import subprocess
 from typing import Dict, Counter as CounterType
 from collections import Counter
 from helpers.api_handler import ApiHandler  # type: ignore
 from helpers.db_handler import DbHandler  # type: ignore
 
 
-def main(testing: bool):
+def main_pull(testing: bool) -> None:
     api_handler = ApiHandler(testing)
     db_handler = DbHandler()
     counter = Counter()
@@ -16,9 +18,23 @@ def main(testing: bool):
     __logging_stats(counter)
 
 
-def __get_args() -> Dict[str, bool]:
-    parser = argparse.ArgumentParser("main.py")
+def main_kafka() -> None:
+    logging.info("POSTING CONSUMER TO KAFKA CONNECT...")
+    result = subprocess.run(["../kafka/post.sh"], capture_output=True)
+    result_dict = json.loads(result.stdout)
+    if result_dict["error_code"] == 500:
+        logging.error("FAILED TO POST!")
+        raise UserWarning("Is the kafka connect cluster up and reciving posts?")
+    else:
+        logging.info("SUCCESS!")
+
+
+def __get_args(parser: argparse.ArgumentParser) -> Dict[str, bool]:
     parser.add_argument("-t", "--testing", action="store_true", default=False)
+    mode = parser.add_mutually_exclusive_group()
+    mode.add_argument("-p", "--pull", action="store_const", dest="mode", const="pull")
+    mode.add_argument("-k", "--kafka", action="store_const", dest="mode", const="kafka")
+    parser.set_defaults(mode="pull")
     return vars(parser.parse_args())
 
 
@@ -47,5 +63,12 @@ def __get_wrapped_text(display_len: int, text: str, symbol: str = "☆") -> str:
 if __name__ == "__main__":
     logging_level = os.getenv("LOGGING_LEVEL", "INFO").upper()
     logging.basicConfig(level=logging_level)
-    args = __get_args()
-    main(args["testing"])
+    parser = argparse.ArgumentParser("main.py")
+    args = __get_args(parser)
+    if args["mode"] == "pull":
+        main_pull(args["testing"])
+    elif args["mode"] == "kafka":
+        main_kafka()
+    else:
+        parser.print_help()
+        raise ValueError("Invalid arguments")
