@@ -231,11 +231,17 @@ PRINT 'postgres_db.public.aritists' FROM BEGINNING;
 </p>
 <br />
 
+When you're ready to exit the project, close both shell sessions and run `cleanup.sh` to clean up your envrionment.
+
+```sh
+./cleanup.sh
+```
+
 <!-- ROADMAP -->
 
 ## Roadmap
 
-The next step for this project is using a custom python consumer to deserialize the messages coming from `postgres_db.public.aritists`, join them with relevant information, and insert them into the database.
+The next step for this project is using a custom python consumer to deserialize the messages coming from `postgres_db.public.artists`, join them with relevant information, and insert them into the database.
 
 <!-- LICENSE -->
 
