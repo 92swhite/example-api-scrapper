@@ -67,11 +67,6 @@ Running this project is pretty simple. You will need to clone the repo and creat
 
 Make sure the environment you are running this in has the ability to run Docker, Docker-Compose, and bash files. I recommend running this on Ubuntu 20.04.
 
-- npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
 ### Installation
 
 1. Get a free API Key at [https://developer.spotify.com/](https://developer.spotify.com/). You can either use an existing account or create a new one by selecting "Sign up for a free Spotify account here." in the lower right.
@@ -109,8 +104,7 @@ Make sure the environment you are running this in has the ability to run Docker,
    git clone https://github.com/92swhite/spotify-api-scraper.git
    ```
 
-4. Install NPM packages
-   Create a file named `secrets.env` and place it in the root directory. Your file should look like this:
+4. Create a file named `secrets.env` and place it in the root directory. Your file should look like this:
 
    ```
    API_CLIENT_ID=123456789abcdefg
@@ -132,7 +126,7 @@ Make sure the environment you are running this in has the ability to run Docker,
 
 ## Usage
 
-If everything has gone well the shell you launched the `run-me.sh` script should be inside a running docker container containing the python script.
+If everything has gone well the shell you launched the `run-me.sh` script with should be inside a running docker container containing the python script.
 
 Run the API scraper using the command
 
