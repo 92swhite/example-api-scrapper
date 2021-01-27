@@ -70,7 +70,7 @@ Make sure the environment you are running this in has the ability to run Docker,
 ### Installation
 
 1. Get a free API Key at [https://developer.spotify.com/](https://developer.spotify.com/). You can either use an existing account or create a new one by selecting "Sign up for a free Spotify account here." in the lower right.
-2. Once your are registered you should see your dashboard, similar to below but without any projects.
+2. Once you are registered, you should see your dashboard, similar to below but without any projects.
 
    <p align="center">
        <a>
