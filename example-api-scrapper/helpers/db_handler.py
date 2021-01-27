@@ -27,7 +27,7 @@ class DbHandler:
             f"{os.environ['DB_USERNAME']}:"
             f"{os.environ['DB_PASSWORD']}@"
             f"{os.environ['DB_SERVER']}:"
-            f"{os.environ['DB_PORT']}/"
+            f"5432/"
             f"{os.environ['DB_DATABASE']}"
         )
         return create_engine(conn_string)
