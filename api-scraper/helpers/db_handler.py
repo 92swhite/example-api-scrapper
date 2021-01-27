@@ -1,11 +1,12 @@
 import os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.exc import IntegrityError
-from sqlalchemy.engine.base import Engine as SQLAlchemyEngine
-from sqlalchemy.orm.session import Session as SQLAlchemySession
-from sqlalchemy.ext.declarative.api import DeclarativeMeta
-from .db_tables import (
+from typing import Dict, List, Any, Counter
+from sqlalchemy import create_engine  # type: ignore
+from sqlalchemy.orm import sessionmaker  # type: ignore
+from sqlalchemy.exc import IntegrityError  # type: ignore
+from sqlalchemy.engine.base import Engine as SQLAlchemyEngine  # type: ignore
+from sqlalchemy.orm.session import Session as SQLAlchemySession  # type: ignore
+from sqlalchemy.ext.declarative.api import DeclarativeMeta  # type: ignore
+from .db_tables import (  # type: ignore
     Base,
     NewReleases,
     Artists,
@@ -26,7 +27,7 @@ class DbHandler:
             f"{os.environ['DB_USERNAME']}:"
             f"{os.environ['DB_PASSWORD']}@"
             f"{os.environ['DB_SERVER']}:"
-            f"{os.environ['DB_PORT']}/"
+            f"5432/"
             f"{os.environ['DB_DATABASE']}"
         )
         return create_engine(conn_string)
@@ -35,26 +36,35 @@ class DbHandler:
         Session = sessionmaker(bind=self.engine)
         return Session()
 
-    def __get_record_instance(self, data: dict, table: DeclarativeMeta) -> dict:
-        row = {key: data[key] for key in table.__table__.columns.keys()}
+    def __get_table_keys(self, table: DeclarativeMeta) -> List[str]:
+        keys = table.__table__.columns.keys()
+        keys.remove("last_updated")
+        return keys
+
+    def __get_record_instance(self, data: Dict[str, Any], table: DeclarativeMeta):
+        row = {key: data[key] for key in self.__get_table_keys(table)}
         return table(**row)
 
     def __upsert_row(self, data: dict, table: DeclarativeMeta) -> None:
         row = self.__get_record_instance(data, table)
         self.session.merge(row)
 
-    def handle_new_releases(self, new_releases: dict) -> None:
+    def handle_new_releases(
+        self, new_releases: List[Dict[str, Any]], counter: Counter
+    ) -> None:
         for album in new_releases:
             album_id = album["id"]
+            counter.update(albums=1)
             self.__upsert_row(album, NewReleases)
             for artist in album["artists"]:
                 self.__upsert_row(artist, Artists)
                 artist["album_id"] = album_id
                 artist["artist_id"] = artist["id"]
+                counter.update(artists=1)
                 self.__upsert_row(artist, NewReleasesArtistsBridge)
             markets = {
                 k: (True if k in album["available_markets"] else False)
-                for k in AvailableMarkets.__table__.columns.keys()
+                for k in self.__get_table_keys(AvailableMarkets)
             }
             markets["album_id"] = album_id
             self.__upsert_row(markets, AvailableMarkets)

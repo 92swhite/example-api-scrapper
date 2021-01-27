@@ -1,12 +1,13 @@
-from sqlalchemy import Column
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date
+from sqlalchemy import Column  # type: ignore
+from sqlalchemy.ext.declarative import declarative_base  # type: ignore
+from sqlalchemy.sql.sqltypes import String, SmallInteger, Boolean, Date, DateTime  # type: ignore
+from datetime import datetime
 
 Base = declarative_base()
 
 
 class NewReleases(Base):
-    __tablename__ = "NewReleases"
+    __tablename__ = "new_releases"
 
     id = Column(String, primary_key=True)
     album_type = Column(String)
@@ -14,25 +15,34 @@ class NewReleases(Base):
     release_date = Column(Date)
     release_date_precision = Column(String)
     total_tracks = Column(SmallInteger)
+    last_updated = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
 
 
 class NewReleasesArtistsBridge(Base):
-    __tablename__ = "NewReleasesArtistsBridge"
+    __tablename__ = "new_releases_artists_bridge"
 
     album_id = Column(String, primary_key=True)
     artist_id = Column(String, primary_key=True)
+    last_updated = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
 
 
 class Artists(Base):
-    __tablename__ = "Artists"
+    __tablename__ = "artists"
 
     id = Column(String, primary_key=True)
     name = Column(String)
     type = Column(String)
+    last_updated = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
 
 
 class AvailableMarkets(Base):
-    __tablename__ = "AvailableMarkets"
+    __tablename__ = "available_markets"
 
     album_id = Column(String, primary_key=True)
     AA = Column(Boolean)
@@ -711,3 +721,6 @@ class AvailableMarkets(Base):
     ZX = Column(Boolean)
     ZY = Column(Boolean)
     ZZ = Column(Boolean)
+    last_updated = Column(
+        DateTime, default=datetime.utcnow, onupdate=datetime.utcnow, nullable=False
+    )
