@@ -83,7 +83,7 @@ Make sure the environment you are running this in has the ability to run Docker,
    <br />
    <p align="center">
        <a>
-           <img src="images/spotify2.png" alt="Spotify1" width="70%">
+           <img src="images/spotify2.png" alt="Spotify2" width="70%">
        </a>
    </p>
 
@@ -93,7 +93,7 @@ Make sure the environment you are running this in has the ability to run Docker,
    <br />
    <p align="center">
        <a>
-           <img src="images/spotify3.png" alt="Spotify1" width="70%">
+           <img src="images/spotify3.png" alt="Spotify3" width="70%">
        </a> 
    </p>
    <br />
@@ -138,7 +138,7 @@ python main.py
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions2.png" alt="Spotify1" width="70%">
+        <img src="images/instructions2.png" alt="instructions2" width="70%">
     </a> 
 </p>
 <br />
@@ -151,7 +151,12 @@ Now you can navigate to http://localhost:8080/, enter the information for a `Pos
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions1.png" alt="Spotify1" width="70%">
+        <img src="images/instructions7.png" alt="instructions7" width="70%">
+    </a> 
+</p>
+<p align="center">
+    <a>
+        <img src="images/instructions8.png" alt="instructions8" width="70%">
     </a> 
 </p>
 <br />
@@ -168,7 +173,7 @@ This will open a session to the KSQL client session.
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions3.png" alt="Spotify1" width="70%">
+        <img src="images/instructions3.png" alt="instructions3" width="70%">
     </a> 
 </p>
 <br />
@@ -183,7 +188,7 @@ LIST TOPICS;
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions4.png" alt="Spotify1" width="70%">
+        <img src="images/instructions4.png" alt="instructions4" width="70%">
     </a> 
 </p>
 <br />
@@ -206,7 +211,7 @@ LIST TOPICS;
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions5.png" alt="Spotify1" width="70%">
+        <img src="images/instructions5.png" alt="instructions5" width="70%">
     </a> 
 </p>
 <br />
@@ -221,7 +226,7 @@ PRINT 'postgres_db.public.aritists' FROM BEGINNING;
 <br />
 <p align="center">
     <a>
-        <img src="images/instructions6.png" alt="Spotify1" width="70%">
+        <img src="images/instructions6.png" alt="instructions6" width="70%">
     </a> 
 </p>
 <br />
