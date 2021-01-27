@@ -18,7 +18,7 @@ COPY requirements.txt /code
 RUN pip3 install -r /code/requirements.txt && \
     rm -r /root/.cache
 
-COPY /example-api-scrapper/. /code/scraper/
+COPY /api-scraper/. /code/scraper/
 
 COPY /kafka/. /code/kafka/
 

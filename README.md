@@ -219,7 +219,7 @@ LIST TOPICS;
 again you should notice a new topic named `postgres_db.public.aritists`. You can inspect this in your KSQL client by by running
 
 ```sql
-PRINT 'postgres_db.public.aritists' FROM BEGINNING;
+PRINT 'postgres_db.public.artists' FROM BEGINNING;
 ```
 
 <br />
