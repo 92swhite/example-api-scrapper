@@ -31,11 +31,21 @@ class ApiHandler:
             token = await self.__get_token_from_request()
             return token
 
+    def __get_request_method(self, method: str, session):
+        methods = {"get": session.get, "post": session.post}
+        return methods[method]
+
     async def __make_request(
-        self, url: str, headers: Dict[str, str] = {}, payload: Dict[str, str] = {}
+        self,
+        url: str,
+        headers: Dict[str, str] = {},
+        payload: Dict[str, str] = {},
+        method: str = "get",
     ) -> Dict[str, Any]:
         async with ClientSession() as session:
-            response = await session.post(url, data=payload, headers=headers)
+            # response = await session.post(url, data=payload, headers=headers)
+            req_method = self.__get_request_method(method, session)
+            response = await req_method(url, data=payload, headers=headers)
         response.raise_for_status()
         response_json = await response.json()
         return response_json
@@ -43,7 +53,7 @@ class ApiHandler:
     async def __get_token_from_request(self) -> str:
         url = f"https://accounts.spotify.com/api/token"
         payload = self.__make_token_payload()
-        response_json = await self.__make_request(url, payload=payload)
+        response_json = await self.__make_request(url, payload=payload, method="post")
         return response_json["access_token"]
 
     def __make_token_payload(self) -> Dict[str, str]:
@@ -86,3 +96,4 @@ class ApiHandler:
             url = result["albums"]["next"]
             offset, limit = self.__parse_offset_and_limit(url)
             yield result["albums"]["items"]
+            logging.info("HANDED OFF SUCCSSFULLY")
